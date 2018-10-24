@@ -10,3 +10,7 @@ body {
         rgb(255, 235, 192)
     );
 }
+
+button {
+  cursor: pointer;
+}
