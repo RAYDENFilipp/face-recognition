@@ -4,26 +4,21 @@ import Logo from "./components/Logo/Logo";
 import ImageLinkForm from "./components/ImageLinkForm/ImageLinkForm";
 import Rank from "./components/Rank/Rank";
 import Particles from "react-particles-js";
+import Clarifai from "clarifai";
 import "./App.css";
+
+const app = new Clarifai.App({
+    apiKey: "df64e530fcec4eac83d0c18e506c7f49"
+});
 
 const particlesOptions = {
     particles: {
         number: {
-            value: 58,
-            density: {
-                enable: false,
-                value_area: 801.7060304327614
-            }
+            value: 58
         },
         opacity: {
             value: 0.5,
-            random: false,
-            anim: {
-                enable: false,
-                speed: 1,
-                opacity_min: 0.1,
-                sync: false
-            }
+            random: false
         },
         size: {
             value: 0,
@@ -60,6 +55,29 @@ const particlesOptions = {
     retina_detect: true
 };
 class App extends Component {
+    constructor() {
+        super();
+        this.state = {
+            input: ""
+        };
+    }
+
+    onInputChange = event => {
+        console.log(event.target.value);
+    };
+
+    onButtonSubmit = () => {
+        console.log("click");
+        app.models.predict("a403429f2ddf4b49b307e318f00e528b", "https://samples.clarifai.com/face-det.jpg").then(
+            function (response) {
+                // do something with response
+            },
+            function (err) {
+                // there was an error
+            }
+        );
+    };
+
     render() {
         return (
             <div className="App">
@@ -67,7 +85,10 @@ class App extends Component {
                 <Navigation />
                 <Logo />
                 <Rank />
-                <ImageLinkForm />
+                <ImageLinkForm
+                    onInputChange={this.onInputChange}
+                    onButtonSubmit={this.onButtonSubmit}
+                />
                 {/*
 
                 <FaceRecognition /> */}
